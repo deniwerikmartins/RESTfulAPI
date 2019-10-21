@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Transformers\ProductTransformer;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Category;
@@ -28,6 +29,8 @@ class Product extends Model
     ];
 
     protected $hidden = ['pivot'];
+
+    public $transformer = ProductTransformer::class;
 
     public function isAvailable()
     {

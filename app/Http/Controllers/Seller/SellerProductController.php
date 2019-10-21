@@ -7,6 +7,7 @@ use App\Product;
 use App\Seller;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SellerProductController extends ApiController
@@ -43,7 +44,7 @@ class SellerProductController extends ApiController
         $data = $request->all();
 
         $data['status'] = Product::UNAVAILABLE_PRODUCT;
-        $data['image'] = '1.jpg';
+        $data['image'] = $request->image->store('');
         $data['seller_id'] = $seller->id;
 
         $product = Product::create($data);
@@ -87,8 +88,14 @@ class SellerProductController extends ApiController
             }
         }
 
+        if ($request->hasFile('image')){
+            Storage::delete($product->image);
+
+            $product->image = $request->image->store('');
+        }
+
         if ($product->isClean()){
-            return $this->errorResponse('You need to sprecify a different value to update', 422);
+            return $this->errorResponse('You need to specify a different value to update', 422);
         }
 
         $product->save();
@@ -108,6 +115,7 @@ class SellerProductController extends ApiController
         $this->checkSeller($seller, $product);
 
         $product->delete();
+        Storage::delete($product->image);
 
         return $this->showOne($product);
     }
@@ -115,7 +123,7 @@ class SellerProductController extends ApiController
     protected function checkSeller(Seller $seller, Product $product)
     {
         if ($seller->id !== $product->seller_id){
-            throw new HttpException(422, 'The sprecified seller is not the actual seller of the product');
+            throw new HttpException(422, 'The specified seller is not the actual seller of the product');
         }
     }
 }

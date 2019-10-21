@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Transformers\TransactionTransformer;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Buyer;
@@ -19,6 +20,8 @@ class Transaction extends Model
         'buyer_id',
         'product_id'
     ];
+
+    public $transformer = TransactionTransformer::class;
 
     public function buyer()
     {
