@@ -78,7 +78,7 @@ class Handler extends ExceptionHandler
         }
 
         if ($exception instanceof NotFoundHttpException){
-            return $this->errorResponse('The specified URL cannot be found', 404);
+            return $this->errorResponse("The specified URL cannot be found", 404);
         }
 
         if ($exception instanceof MethodNotAllowedHttpException){

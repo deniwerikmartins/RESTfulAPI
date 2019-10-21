@@ -10,10 +10,18 @@ use App\Transaction;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Transformers\TransactionTransformer;
 
 
 class ProductBuyerTransactionController extends ApiController
 {
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->middleware('transform.input:' . TransactionTransformer::class)->only(['store']);
+    }
 
     /**
      * Store a newly created resource in storage.

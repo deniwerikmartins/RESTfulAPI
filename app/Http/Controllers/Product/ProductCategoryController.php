@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 
 class ProductCategoryController extends ApiController
 {
+
+    
+    
     /**
      * Display a listing of the resource.
      *
