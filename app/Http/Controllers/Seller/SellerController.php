@@ -15,15 +15,17 @@ class SellerController extends ApiController
         $this->middleware('scope:read-general')->only('show');
         $this->middleware('can:view,seller')->only('show');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index()
     {
-        //
+        $this->allowedAdminAction();
+
         $sellers = Seller::has('products')->get();
 
         return $this->showAll($sellers);

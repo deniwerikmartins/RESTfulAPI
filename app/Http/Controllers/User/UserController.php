@@ -25,15 +25,16 @@ class UserController extends ApiController
     }
 
 
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index()
     {
-        //
+        $this->allowedAdminAction();
+
         $users = User::all();
 
         return $this->showAll($users);
@@ -84,9 +85,10 @@ class UserController extends ApiController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  User  $user
+     * @param \Illuminate\Http\Request $request
+     * @param User $user
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request, User $user)
     {
@@ -114,6 +116,9 @@ class UserController extends ApiController
         }
 
         if ($request->has('admin')){
+
+            $this->allowedAdminAction();
+
             if (!$user->isVerified()){
                 return $this->errorResponse('Only verified users can modify the admin field',  409);
             }

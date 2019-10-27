@@ -14,14 +14,18 @@ class SellerBuyerController extends ApiController
     {
         parent::__construct();
     }
-    
+
     /**
      * Display a listing of the resource.
      *
+     * @param Seller $seller
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index(Seller $seller)
     {
+        $this->allowedAdminAction();
+
         $buyers = $seller->products()
             ->whereHas('transactions')
             ->with('transactions')

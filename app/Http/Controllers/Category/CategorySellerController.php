@@ -14,13 +14,18 @@ class CategorySellerController extends ApiController
     {
         parent::__construct();
     }
+
     /**
      * Display a listing of the resource.
      *
+     * @param Category $category
      * @return \Illuminate\Http\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index(Category $category)
     {
+        $this->allowedAdminAction();
+
         $sellers = $category->products()
             ->with('seller')
             ->get()
