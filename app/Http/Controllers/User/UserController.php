@@ -138,13 +138,21 @@ class UserController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  User  $user
+     * @param User $user
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy(User $user)
     {
         //
         $user->delete();
+
+        return $this->showOne($user);
+    }
+
+    public function me(Request $request)
+    {
+        $user = $request->user();
 
         return $this->showOne($user);
     }
